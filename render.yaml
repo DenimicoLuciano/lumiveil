@@ -1,0 +1,24 @@
+# Render blueprint: one Docker web service on the free plan.
+# App data lives in a Turso cloud database (TURSO_* env vars, set in the
+# dashboard) so accounts and stories survive redeploys. Without them the
+# app falls back to a local file, which is ephemeral on the free plan.
+services:
+  - type: web
+    name: lumiveil
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/config
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /app/data
+      - key: TURSO_DATABASE_URL
+        sync: false # set in the Render dashboard — free cloud DB for permanent accounts + stories
+      - key: TURSO_AUTH_TOKEN
+        sync: false # set in the Render dashboard
+      - key: OPENAI_API_KEY
+        sync: false # set in the Render dashboard — characters reply only when this is set
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
