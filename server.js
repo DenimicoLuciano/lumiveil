@@ -32,7 +32,7 @@ async function callAI(messages, { maxTokens = 900, temperature = 0.9 } = {}) {
   const res = await fetch(AI_BASE_URL() + '/chat/completions', {
     method: 'POST',
     headers,
-    signal: AbortSignal.timeout(45000),
+    signal: AbortSignal.timeout(180000),
     body: JSON.stringify({ model: AI_MODEL(), messages, max_tokens: maxTokens, temperature }),
   });
   if (!res.ok) {
