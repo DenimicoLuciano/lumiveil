@@ -397,7 +397,7 @@ app.post('/api/chat/:key/message', authRequired, adultRequired, accountRequired,
   const history = loadMessages(convo.id).map(m => ({ role: m.role, text: m.text }));
   let reply = null;
   try { reply = await generateReply(def, req.user, facts, history); }
-  catch (e) { return res.status(502).json({ error: 'The AI could not reply just now — try again in a moment.' }); }
+  catch (e) { console.error('AI provider error:', e && e.message); return res.status(502).json({ error: 'The AI could not reply just now — try again in a moment.', detail: String((e && e.message) || e).slice(0, 300) }); }
   if (!reply) return res.status(502).json({ error: 'The AI could not reply just now — try again in a moment.' });
 
   db.prepare('INSERT INTO messages (conversation_id, role, text) VALUES (?,?,?)')
