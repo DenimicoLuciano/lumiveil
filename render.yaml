@@ -20,5 +20,7 @@ services:
         sync: false # set in the Render dashboard
       - key: OPENAI_API_KEY
         sync: false # set in the Render dashboard — characters reply only when this is set
-      - key: OPENAI_MODEL
-        value: gpt-4o-mini
+- key: AI_BASE_URL
+        sync: false
+              - key: OPENAI_MODEL
+                      value: gemini-3.8-flash
