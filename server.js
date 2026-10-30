@@ -23,12 +23,13 @@ app.use(express.json({ limit: '2mb' }));
 // ---------- AI ----------
 const AI_CONFIGURED = () => !!process.env.OPENAI_API_KEY;
 const AI_MODEL = () => process.env.OPENAI_MODEL || 'gpt-4o-mini';
+const AI_BASE_URL = () => process.env.AI_BASE_URL || 'https://api.openai.com/v1';
 
 async function callAI(messages, { maxTokens = 900, temperature = 0.9 } = {}) {
   const apiKey = process.env.OPENAI_API_KEY;
   const headers = { 'Content-Type': 'application/json' };
   if (apiKey) headers.Authorization = ['Bearer', apiKey].join(' ');
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+  const res = await fetch(AI_BASE_URL() + '/chat/completions', {
     method: 'POST',
     headers,
     signal: AbortSignal.timeout(45000),
